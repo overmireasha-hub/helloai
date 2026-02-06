@@ -3,17 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 生产力工具导航 | 精选集</title>
+    <title>Hi！AI - 生产力工具导航</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
+            /* 浅色模式变量 (默认) */
             --bg-body: #ffffff;
             --bg-card: #ffffff;
-            --text-main: #111111;
+            --text-main: #1a1a1a;
             --text-sub: #666666;
-            --border-color: #e5e5e5;
-            --accent-color: #000000; /* 纯黑 */
-            --hover-shadow: 0 20px 40px -10px rgba(0,0,0,0.1);
+            --border-color: #eaeaea;
+            --accent-color: #000000;
+            --tag-bg: #f5f5f5;
+            --nav-bg: rgba(255, 255, 255, 0.85); /* 导航栏半透明背景 */
+            --btn-hover: #f0f0f0;
+        }
+
+        /* 深色模式变量 */
+        body.dark-mode {
+            --bg-body: #111111;
+            --bg-card: #1a1a1a;
+            --text-main: #f0f0f0;
+            --text-sub: #a0a0a0;
+            --border-color: #333333;
+            --accent-color: #ffffff;
+            --tag-bg: #2a2a2a;
+            --nav-bg: rgba(17, 17, 17, 0.85);
+            --btn-hover: #333333;
+        }
+
+        html {
+            scroll-behavior: smooth; /* 平滑滚动 */
         }
 
         body {
@@ -22,890 +42,979 @@
             color: var(--text-main);
             margin: 0;
             padding: 0;
-            line-height: 1.6;
+            line-height: 1.5;
             -webkit-font-smoothing: antialiased;
+            transition: background-color 0.3s ease, color 0.3s ease; /* 主题切换动画 */
         }
 
-        /* 极简头部 */
+        /* --- 顶部导航栏 --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px; /* 两侧间距 */
+            background-color: var(--nav-bg);
+            backdrop-filter: blur(12px); /* 磨砂玻璃效果 */
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+        }
+
+        .nav-left {
+            font-size: 0.9rem;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums; /* 数字等宽，防止时间跳动 */
+            color: var(--text-main);
+            min-width: 180px;
+        }
+
+        .nav-center {
+            display: flex;
+            gap: 24px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-sub);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--text-main);
+        }
+
+        .nav-right {
+            display: flex;
+            justify-content: flex-end;
+            min-width: 180px;
+        }
+
+        .theme-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .theme-btn:hover {
+            background-color: var(--btn-hover);
+            border-color: var(--accent-color);
+        }
+
+        /* --- 头部区域 --- */
         .header {
-            padding: 6rem 2rem 4rem;
+            padding: 8rem 1rem 3rem; /* 增加顶部padding，避开导航栏 */
             text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 3rem;
+            transition: border-color 0.3s ease;
         }
 
         .header h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            letter-spacing: -1px;
-            margin-bottom: 1rem;
+            font-size: 3.5rem; /* 大一点的 Hi! AI */
+            font-weight: 800;
+            margin: 0 0 0.5rem;
+            letter-spacing: -0.05em;
             color: var(--text-main);
         }
 
         .header p {
-            font-size: 1.1rem;
             color: var(--text-sub);
-            font-weight: 400;
-        }
-
-        .container {
-            max-width: 1400px;
+            font-size: 1.1rem;
+            max-width: 600px;
             margin: 0 auto;
-            padding: 0 2rem 6rem;
         }
 
-        /* 分类标题 - 极简线条风格 */
+        /* --- 容器与布局 --- */
+        .container {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 0 40px 80px; /* 两侧留白增加 */
+        }
+
         .category-section {
-            margin-bottom: 6rem;
+            margin-bottom: 5rem;
+            scroll-margin-top: 100px; /* 锚点定位偏移，防止被导航栏遮挡 */
         }
 
         .category-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--text-main); /* 黑线 */
-            display: flex;
-            align-items: center;
-            letter-spacing: -0.5px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--text-main);
+            display: inline-block;
+            color: var(--text-main);
+            transition: border-color 0.3s ease;
         }
 
-        /* 网格布局 */
+        /* 紧凑网格布局 */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
         }
 
-        /* 卡片设计 - 黑白灰 */
+        /* --- 卡片样式 --- */
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 8px; /*稍微方一点，更显高级*/
-            padding: 24px;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border-radius: 8px;
+            padding: 18px;
+            transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
             position: relative;
+            height: 100%;
         }
 
         .card:hover {
             border-color: var(--accent-color);
-            transform: translateY(-4px);
-            box-shadow: var(--hover-shadow);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
         }
 
-        /* 顶部信息栏 */
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 16px;
-        }
-
-        .tool-name-group {
-            display: flex;
-            flex-direction: column;
+            margin-bottom: 10px;
         }
 
         .tool-name {
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             font-weight: 700;
             color: var(--text-main);
             text-decoration: none;
-            margin-bottom: 4px;
-            letter-spacing: -0.5px;
+            line-height: 1.2;
         }
         
         .tool-name:hover {
             text-decoration: underline;
         }
 
-        /* 标签系统 */
         .badges {
             display: flex;
-            gap: 6px;
-            font-size: 0.75rem;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 6px;
         }
 
         .tag {
-            padding: 2px 8px;
+            font-size: 0.7rem;
+            padding: 2px 6px;
             border-radius: 4px;
-            font-weight: 500;
-            border: 1px solid transparent;
-        }
-
-        /* 价格标签 - 灰色系 */
-        .tag-price {
-            background-color: #f3f3f3;
-            color: #555;
-            border: 1px solid #eee;
-        }
-
-        /* 网络状态标签 */
-        .tag-network {
-            font-weight: 600;
-        }
-        .net-vpn {
-            background-color: #fff;
-            border: 1px solid #111;
-            color: #111;
-        }
-        .net-direct {
-            background-color: #fff;
-            border: 1px solid #ccc;
-            color: #999;
-        }
-
-        /* 内容区域 */
-        .desc {
-            font-size: 0.95rem;
+            background-color: var(--tag-bg);
             color: var(--text-sub);
-            margin-bottom: 24px;
-            line-height: 1.7;
-            min-height: 3.4em; /* 对齐高度 */
+            font-weight: 500;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        /* 网络状态标签颜色 */
+        .tag.vpn {
+            border-color: var(--text-main);
+            color: var(--text-main);
+            background: transparent;
+        }
+        
+        .tag.direct {
+            opacity: 0.7;
+        }
+
+        .desc {
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            margin-bottom: 14px;
+            line-height: 1.5;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            height: 2.6em;
         }
 
         .features {
-            margin-bottom: 24px;
+            background-color: var(--tag-bg);
+            border-radius: 6px;
+            padding: 10px;
+            font-size: 0.75rem;
+            color: var(--text-sub);
             flex-grow: 1;
-        }
-
-        .features strong {
-            display: block;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #999;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
+            border: 1px solid transparent; /* 占位防止跳动 */
         }
 
         .features ul {
             margin: 0;
-            padding: 0;
-            list-style: none;
-        }
-
-        .features li {
-            position: relative;
             padding-left: 14px;
-            margin-bottom: 6px;
-            font-size: 0.9rem;
-            color: #444;
+        }
+        
+        .features li {
+            margin-bottom: 3px;
         }
 
-        .features li::before {
-            content: "•";
-            position: absolute;
-            left: 0;
-            color: #ccc;
-        }
-
-        /* 按钮 - 黑底白字 */
         .btn-visit {
             display: block;
             text-align: center;
-            background-color: transparent;
-            color: var(--text-main);
-            padding: 12px 0;
-            border: 1px solid var(--text-main);
+            background: var(--text-main); /* 按钮跟随主题色 */
+            color: var(--bg-body);       /* 文字反色 */
+            font-size: 0.85rem;
+            padding: 10px 0;
             border-radius: 6px;
             text-decoration: none;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: all 0.2s ease;
+            font-weight: 600;
+            transition: opacity 0.2s, transform 0.1s;
         }
 
         .btn-visit:hover {
-            background-color: var(--text-main);
-            color: #fff;
+            opacity: 0.9;
         }
 
-        /* 底部 */
+        /* --- 底部 --- */
         .footer {
             border-top: 1px solid var(--border-color);
-            padding: 4rem 2rem;
+            padding: 3rem 1rem;
             text-align: center;
+            font-size: 0.85rem;
             color: var(--text-sub);
-            font-size: 0.9rem;
-            background-color: #fafafa;
+            background-color: var(--tag-bg);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
-        
-        .footer-legend {
+
+        .legend {
             display: flex;
             justify-content: center;
             gap: 20px;
             margin-bottom: 20px;
-            font-size: 0.85rem;
         }
-
+        
         .legend-item {
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
-        /* 响应式 */
+        /* 移动端适配 */
         @media (max-width: 768px) {
-            .header h1 { font-size: 2rem; }
+            .navbar { padding: 0 20px; }
+            .nav-center { display: none; } /* 移动端隐藏中间导航链接，保持简洁 */
+            .container { padding: 0 20px 60px; }
+            .header h1 { font-size: 2.5rem; }
             .grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
+<nav class="navbar">
+    <div class="nav-left" id="clock">Loading...</div>
+    <div class="nav-center">
+        <a href="#llm" class="nav-link">大模型</a>
+        <a href="#agent" class="nav-link">Agent</a>
+        <a href="#image" class="nav-link">图像视频</a>
+        <a href="#coding" class="nav-link">编程</a>
+        <a href="#work" class="nav-link">办公</a>
+        <a href="#others" class="nav-link">其他</a>
+    </div>
+    <div class="nav-right">
+        <button class="theme-btn" id="theme-toggle" onclick="toggleTheme()">
+            <span id="theme-icon">🌙</span>
+        </button>
+    </div>
+</nav>
+
 <div class="header">
-    <h1>AI 生产力工具精选</h1>
+    <h1>Hi！AI</h1>
     <p>Global AI Productivity Tools Collection</p>
 </div>
 
 <div class="container">
-
-    <div class="category-section">
-        <h2 class="category-title">主流大模型对话 / LLMs</h2>
+    <div id="llm" class="category-section">
+        <h2 class="category-title">主流大模型对话</h2>
         <div class="grid">
             <div class="card">
                 <div class="card-header">
-                    <div class="tool-name-group">
+                    <div>
                         <a href="https://chat.openai.com" target="_blank" class="tool-name">ChatGPT</a>
                         <div class="badges">
-                            <span class="tag tag-price">免费/付费</span>
-                            <span class="tag tag-network net-vpn">✈️ 需梯子</span>
+                            <span class="tag">免费/付费</span>
+                            <span class="tag vpn">✈️ 需科学上网</span>
                         </div>
                     </div>
                 </div>
-                <div class="desc">OpenAI研发的行业标杆，支持多轮对话、数据分析与多模态交互，目前最通用的AI助手。</div>
+                <div class="desc" title="ChatGPT是由OpenAI研发的大型语言模型，支持多轮对话、文本生成、问答翻译等，目前最广泛使用的AI对话工具。">ChatGPT是由OpenAI研发的大型语言模型，支持多轮对话、文本生成、问答翻译等，目前最广泛使用的AI对话工具。</div>
                 <div class="features">
-                    <strong>Features</strong>
-                    <ul>
-                        <li>精准的多轮语境理解</li>
-                        <li>代码编写与调试</li>
-                        <li>DALL·E 3 绘画集成</li>
-                    </ul>
+                    <ul><li>多轮对话，精准理解上下文</li><li>文本生成与润色</li><li>代码编写与调试</li></ul>
                 </div>
-                <a href="https://chat.openai.com" target="_blank" class="btn-visit">访问官网</a>
+                <a href="https://chat.openai.com" target="_blank" class="btn-visit">访问</a>
             </div>
-
             <div class="card">
                 <div class="card-header">
-                    <div class="tool-name-group">
+                    <div>
                         <a href="https://claude.ai" target="_blank" class="tool-name">Claude</a>
                         <div class="badges">
-                            <span class="tag tag-price">免费/付费</span>
-                            <span class="tag tag-network net-vpn">✈️ 需梯子</span>
+                            <span class="tag">免费/付费</span>
+                            <span class="tag vpn">✈️ 需科学上网</span>
                         </div>
                     </div>
                 </div>
-                <div class="desc">Anthropic出品，以超长文本处理能力著称，文风细腻自然，适合长文写作与代码分析。</div>
+                <div class="desc" title="Claude是由Anthropic研发的模型助手，拥有超长上下文窗口，支持一次性处理整本书或大型代码库。">Claude是由Anthropic研发的模型助手，拥有超长上下文窗口，支持一次性处理整本书或大型代码库。</div>
                 <div class="features">
-                    <strong>Features</strong>
-                    <ul>
-                        <li>200K+ 上下文窗口</li>
-                        <li>拟人化写作风格</li>
-                        <li>Artifacts 实时预览</li>
-                    </ul>
+                    <ul><li>基础对话与角色保持</li><li>超长文本分析</li><li>代码解释能力</li></ul>
                 </div>
-                <a href="https://claude.ai" target="_blank" class="btn-visit">访问官网</a>
+                <a href="https://claude.ai" target="_blank" class="btn-visit">访问</a>
             </div>
-
             <div class="card">
                 <div class="card-header">
-                    <div class="tool-name-group">
+                    <div>
                         <a href="https://gemini.google.com" target="_blank" class="tool-name">Gemini</a>
                         <div class="badges">
-                            <span class="tag tag-price">免费/付费</span>
-                            <span class="tag tag-network net-vpn">✈️ 需梯子</span>
+                            <span class="tag">免费/付费</span>
+                            <span class="tag vpn">✈️ 需科学上网</span>
                         </div>
                     </div>
                 </div>
-                <div class="desc">Google的原生多模态模型，深度集成谷歌生态，处理视频、图像与文本的综合能力强。</div>
+                <div class="desc" title="Gemini是Google推出的新一代多模态大语言模型，原生支持文本、图像、音频、视频的输入与输出。">Gemini是Google推出的新一代多模态大语言模型，原生支持文本、图像、音频、视频的输入与输出。</div>
                 <div class="features">
-                    <strong>Features</strong>
-                    <ul>
-                        <li>原生多模态理解</li>
-                        <li>谷歌全家桶集成</li>
-                        <li>超长上下文支持</li>
-                    </ul>
+                    <ul><li>多模态原生处理</li><li>智能工具与代码集成</li><li>Google生态整合</li></ul>
                 </div>
-                <a href="https://gemini.google.com" target="_blank" class="btn-visit">访问官网</a>
+                <a href="https://gemini.google.com" target="_blank" class="btn-visit">访问</a>
             </div>
-
             <div class="card">
                 <div class="card-header">
-                    <div class="tool-name-group">
+                    <div>
                         <a href="https://copilot.microsoft.com" target="_blank" class="tool-name">Copilot</a>
                         <div class="badges">
-                            <span class="tag tag-price">免费/付费</span>
-                            <span class="tag tag-network net-vpn">✈️ 需梯子</span>
+                            <span class="tag">免费/付费</span>
+                            <span class="tag vpn">✈️ 需科学上网</span>
                         </div>
                     </div>
                 </div>
-                <div class="desc">微软出品，基于GPT-4技术，免费版即可体验联网搜索与AI画图，办公场景结合紧密。</div>
+                <div class="desc" title="GitHub Copilot与OpenAI联合开发，集成于微软生态，提供实时代码建议和自然语言对话。">GitHub Copilot与OpenAI联合开发，集成于微软生态，提供实时代码建议和自然语言对话。</div>
                 <div class="features">
-                    <strong>Features</strong>
-                    <ul>
-                        <li>免费使用GPT-4能力</li>
-                        <li>实时联网搜索引用</li>
-                        <li>集成Office办公套件</li>
-                    </ul>
+                    <ul><li>行内代码补全</li><li>函数/代码块生成</li><li>集成聊天交互</li></ul>
                 </div>
-                <a href="https://copilot.microsoft.com" target="_blank" class="btn-visit">访问官网</a>
+                <a href="https://copilot.microsoft.com" target="_blank" class="btn-visit">访问</a>
             </div>
-
             <div class="card">
                 <div class="card-header">
-                    <div class="tool-name-group">
+                    <div>
                         <a href="https://www.doubao.com/chat/" target="_blank" class="tool-name">豆包</a>
                         <div class="badges">
-                            <span class="tag tag-price">免费</span>
-                            <span class="tag tag-network net-direct">🇨🇳 直连</span>
+                            <span class="tag">免费</span>
+                            <span class="tag direct">🇨🇳 国内直连</span>
                         </div>
                     </div>
                 </div>
-                <div class="desc">字节跳动出品，更懂中文语境，移动端体验极佳，支持实时语音通话，完全免费。</div>
+                <div class="desc" title="豆包是字节跳动开发的AI助手，提供智能对话、写作辅助、学习辅导，支持多模态生成。">豆包是字节跳动开发的AI助手，提供智能对话、写作辅助、学习辅导，支持多模态生成。</div>
                 <div class="features">
-                    <strong>Features</strong>
-                    <ul>
-                        <li>优秀的中文理解</li>
-                        <li>实时语音交互</li>
-                        <li>多模态生成能力</li>
-                    </ul>
+                    <ul><li>对话问答系统</li><li>文本创作助手</li><li>学习辅导功能</li></ul>
                 </div>
-                <a href="https://www.doubao.com/chat/" target="_blank" class="btn-visit">访问官网</a>
+                <a href="https://www.doubao.com/chat/" target="_blank" class="btn-visit">访问</a>
             </div>
-
             <div class="card">
                 <div class="card-header">
-                    <div class="tool-name-group">
+                    <div>
                         <a href="https://kimi-zh.com" target="_blank" class="tool-name">Kimi</a>
                         <div class="badges">
-                            <span class="tag tag-price">免费/付费</span>
-                            <span class="tag tag-network net-direct">🇨🇳 直连</span>
+                            <span class="tag">免费/付费</span>
+                            <span class="tag direct">🇨🇳 国内直连</span>
                         </div>
                     </div>
                 </div>
-                <div class="desc">月之暗面科技出品，主打超长无损记忆，擅长处理数十万字的长文档、财报与合同。</div>
+                <div class="desc" title="Kimi由月之暗面科技推出，支持单次输入200万字长文本，擅长长文档处理与数据提取。">Kimi由月之暗面科技推出，支持单次输入200万字长文本，擅长长文档处理与数据提取。</div>
                 <div class="features">
-                    <strong>Features</strong>
-                    <ul>
-                        <li>超长文本无损解析</li>
-                        <li>高效文件摘要</li>
-                        <li>精准联网搜索</li>
-                    </ul>
+                    <ul><li>专业文档处理</li><li>智能创作工具</li><li>行业解决方案</li></ul>
                 </div>
-                <a href="https://kimi-zh.com" target="_blank" class="btn-visit">访问官网</a>
+                <a href="https://kimi-zh.com" target="_blank" class="btn-visit">访问</a>
             </div>
-
             <div class="card">
                 <div class="card-header">
-                    <div class="tool-name-group">
+                    <div>
                         <a href="https://deep-seek.com/zh" target="_blank" class="tool-name">DeepSeek</a>
                         <div class="badges">
-                            <span class="tag tag-price">免费</span>
-                            <span class="tag tag-network net-direct">🇨🇳 直连</span>
+                            <span class="tag">免费</span>
+                            <span class="tag direct">🇨🇳 国内直连</span>
                         </div>
                     </div>
                 </div>
-                <div class="desc">国产开源模型之光，拥有强大的深度推理能力，在代码生成与数理逻辑方面表现惊艳。</div>
+                <div class="desc" title="DeepSeek是国产开源模型，构建了强大的开源权重语言模型，擅长代码生成与深度推理。">DeepSeek是国产开源模型，构建了强大的开源权重语言模型，擅长代码生成与深度推理。</div>
                 <div class="features">
-                    <strong>Features</strong>
-                    <ul>
-                        <li>强大的代码生成</li>
-                        <li>深度逻辑推理</li>
-                        <li>开源权重性能强</li>
-                    </ul>
+                    <ul><li>文本生成</li><li>自然语言理解</li><li>编程与代码相关</li></ul>
                 </div>
-                <a href="https://deep-seek.com/zh" target="_blank" class="btn-visit">访问官网</a>
+                <a href="https://deep-seek.com/zh" target="_blank" class="btn-visit">访问</a>
             </div>
-
             <div class="card">
                 <div class="card-header">
-                    <div class="tool-name-group">
+                    <div>
                         <a href="https://yiyan.baidu.com" target="_blank" class="tool-name">文心一言</a>
                         <div class="badges">
-                            <span class="tag tag-price">免费/付费</span>
-                            <span class="tag tag-network net-direct">🇨🇳 直连</span>
+                            <span class="tag">免费/付费</span>
+                            <span class="tag direct">🇨🇳 国内直连</span>
                         </div>
                     </div>
                 </div>
-                <div class="desc">百度出品的知识增强大模型，拥有庞大的中文知识库，擅长商业文案撰写与中文创作。</div>
+                <div class="desc" title="文心一言是百度全新一代知识增强大语言模型，擅长中文创作、商业文案与数理逻辑推算。">文心一言是百度全新一代知识增强大语言模型，擅长中文创作、商业文案与数理逻辑推算。</div>
                 <div class="features">
-                    <strong>Features</strong>
-                    <ul>
-                        <li>丰富的中文知识库</li>
-                        <li>商业文案生成</li>
-                        <li>插件生态系统</li>
-                    </ul>
+                    <ul><li>文学创作</li><li>商业文案创作</li><li>数理逻辑推算</li></ul>
                 </div>
-                <a href="https://yiyan.baidu.com" target="_blank" class="btn-visit">访问官网</a>
+                <a href="https://yiyan.baidu.com" target="_blank" class="btn-visit">访问</a>
             </div>
-
-             <div class="card">
+            <div class="card">
                 <div class="card-header">
-                    <div class="tool-name-group">
+                    <div>
                         <a href="https://tongyi.aliyun.com" target="_blank" class="tool-name">通义千问</a>
                         <div class="badges">
-                            <span class="tag tag-price">免费</span>
-                            <span class="tag tag-network net-direct">🇨🇳 直连</span>
+                            <span class="tag">免费</span>
+                            <span class="tag direct">🇨🇳 国内直连</span>
                         </div>
                     </div>
                 </div>
-                <div class="desc">阿里云自主研发的大模型，逻辑推理能力强劲，适合处理复杂的代码任务与长文档分析。</div>
+                <div class="desc" title="通义千问是阿里云研发的大模型，具备多模态理解、逻辑推理及长文本处理等核心能力。">通义千问是阿里云研发的大模型，具备多模态理解、逻辑推理及长文本处理等核心能力。</div>
                 <div class="features">
-                    <strong>Features</strong>
-                    <ul>
-                        <li>复杂逻辑推理</li>
-                        <li>编程辅助能力强</li>
-                        <li>长文档分析</li>
-                    </ul>
+                    <ul><li>文本生成与创作</li><li>编程辅助</li><li>知识问答</li></ul>
                 </div>
-                <a href="https://tongyi.aliyun.com" target="_blank" class="btn-visit">访问官网</a>
+                <a href="https://tongyi.aliyun.com" target="_blank" class="btn-visit">访问</a>
             </div>
         </div>
     </div>
 
-    <div class="category-section">
-        <h2 class="category-title">Agent 开发 / Development</h2>
+    <div id="agent" class="category-section">
+        <h2 class="category-title">Agent开发</h2>
         <div class="grid">
             <div class="card">
                 <div class="card-header">
-                    <div class="tool-name-group">
+                    <div>
                         <a href="https://dify.ai" target="_blank" class="tool-name">Dify</a>
                         <div class="badges">
-                            <span class="tag tag-price">开源/付费</span>
-                            <span class="tag tag-network net-direct">🇨🇳 直连</span>
+                            <span class="tag">免费/付费</span>
+                            <span class="tag direct">🇨🇳 国内直连</span>
                         </div>
                     </div>
                 </div>
-                <div class="desc">开源的LLM应用开发平台，支持可视化的Prompt编排与RAG知识库管理，企业级首选。</div>
+                <div class="desc" title="Dify 是一个开源的 AI 应用开发平台，支持构建聊天机器人、Agent、工作流和知识库。">Dify 是一个开源的 AI 应用开发平台，支持构建聊天机器人、Agent、工作流和知识库。</div>
                 <div class="features">
-                    <strong>Features</strong>
-                    <ul>
-                        <li>可视化应用编排</li>
-                        <li>RAG 知识库管理</li>
-                        <li>多模型接入支持</li>
-                    </ul>
+                    <ul><li>知识库RAG管理</li><li>工具调用能力</li><li>可视化工作室</li></ul>
                 </div>
-                <a href="https://dify.ai" target="_blank" class="btn-visit">访问官网</a>
+                <a href="https://dify.ai" target="_blank" class="btn-visit">访问</a>
             </div>
             <div class="card">
                 <div class="card-header">
-                    <div class="tool-name-group">
-                        <a href="https://coze.cn" target="_blank" class="tool-name">Coze (扣子)</a>
+                    <div>
+                        <a href="https://coze.com" target="_blank" class="tool-name">Coze扣子</a>
                         <div class="badges">
-                            <span class="tag tag-price">免费</span>
-                            <span class="tag tag-network net-direct">🇨🇳 直连</span>
+                            <span class="tag">免费/付费</span>
+                            <span class="tag vpn">✈️ 需科学上网</span>
                         </div>
                     </div>
                 </div>
-                <div class="desc">字节跳动推出的零代码Bot开发平台，拥有丰富的插件生态（新闻、天气等），一键发布。</div>
+                <div class="desc" title="扣子是一个零代码搭建AI智能体的平台，支持拖拽式界面，拥有丰富的插件生态。">扣子是一个零代码搭建AI智能体的平台，支持拖拽式界面，拥有丰富的插件生态。</div>
                 <div class="features">
-                    <strong>Features</strong>
-                    <ul>
-                        <li>零代码拖拽开发</li>
-                        <li>海量插件生态</li>
-                        <li>一键发布到微信/飞书</li>
-                    </ul>
+                    <ul><li>零代码可视化开发</li><li>多模态能力集成</li><li>强大的插件生态</li></ul>
                 </div>
-                <a href="https://coze.cn" target="_blank" class="btn-visit">访问官网</a>
+                <a href="https://coze.com" target="_blank" class="btn-visit">访问</a>
             </div>
             <div class="card">
                 <div class="card-header">
-                    <div class="tool-name-group">
+                    <div>
                         <a href="https://langchain.com" target="_blank" class="tool-name">LangChain</a>
                         <div class="badges">
-                            <span class="tag tag-price">开源</span>
-                            <span class="tag tag-network net-direct">🇨🇳 直连</span>
+                            <span class="tag">开源免费</span>
+                            <span class="tag direct">🇨🇳 国内直连</span>
                         </div>
                     </div>
                 </div>
-                <div class="desc">开发者最爱的LLM框架，提供强大的组件抽象，是连接大模型与外部数据的桥梁。</div>
+                <div class="desc" title="LangChain是一个用于开发语言模型驱动应用程序的框架，支持数据连接、代理和模型集成。">LangChain是一个用于开发语言模型驱动应用程序的框架，支持数据连接、代理和模型集成。</div>
                 <div class="features">
-                    <strong>Features</strong>
-                    <ul>
-                        <li>灵活的Chain编排</li>
-                        <li>强大的组件抽象</li>
-                        <li>Python/JS 支持</li>
-                    </ul>
+                    <ul><li>数据连接</li><li>模型集成</li><li>代理功能</li></ul>
                 </div>
-                <a href="https://langchain.com" target="_blank" class="btn-visit">访问官网</a>
+                <a href="https://langchain.com" target="_blank" class="btn-visit">访问</a>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <a href="https://flowiseai.com" target="_blank" class="tool-name">Flowise</a>
+                        <div class="badges">
+                            <span class="tag">开源免费</span>
+                            <span class="tag direct">🇨🇳 国内直连</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="desc" title="Flowise是一个开源的低代码LLM应用构建平台，提供可视化拖拽界面，基于LangChain.js。">Flowise是一个开源的低代码LLM应用构建平台，提供可视化拖拽界面，基于LangChain.js。</div>
+                <div class="features">
+                    <ul><li>可视化拖拽界面</li><li>支持多种语言模型</li><li>丰富的组件库</li></ul>
+                </div>
+                <a href="https://flowiseai.com" target="_blank" class="btn-visit">访问</a>
             </div>
         </div>
     </div>
 
-    <div class="category-section">
-        <h2 class="category-title">图像与视频 / Visual Generation</h2>
+    <div id="image" class="category-section">
+        <h2 class="category-title">AI图像、视频生成</h2>
         <div class="grid">
             <div class="card">
                 <div class="card-header">
-                    <div class="tool-name-group">
+                    <div>
                         <a href="https://midjourney.com" target="_blank" class="tool-name">Midjourney</a>
                         <div class="badges">
-                            <span class="tag tag-price">付费</span>
-                            <span class="tag tag-network net-vpn">✈️ 需梯子</span>
+                            <span class="tag">付费</span>
+                            <span class="tag vpn">✈️ 需科学上网</span>
                         </div>
                     </div>
                 </div>
-                <div class="desc">目前艺术感最强、画质最高的AI绘图工具，需在Discord中使用，效果惊艳。</div>
+                <div class="desc" title="Midjourney是一个AI图像生成平台，生成质量极高，艺术感强，需在Discord使用。">Midjourney是一个AI图像生成平台，生成质量极高，艺术感强，需在Discord使用。</div>
                 <div class="features">
-                    <strong>Features</strong>
-                    <ul>
-                        <li>顶级的艺术风格</li>
-                        <li>完美的光影细节</li>
-                        <li>社区氛围活跃</li>
-                    </ul>
+                    <ul><li>文本生成图像</li><li>图像生成图像</li><li>风格迁移</li></ul>
                 </div>
-                <a href="https://midjourney.com" target="_blank" class="btn-visit">访问官网</a>
+                <a href="https://midjourney.com" target="_blank" class="btn-visit">访问</a>
             </div>
-
             <div class="card">
                 <div class="card-header">
-                    <div class="tool-name-group">
+                    <div>
                         <a href="https://openai.com/dall-e-3" target="_blank" class="tool-name">DALL-E 3</a>
                         <div class="badges">
-                            <span class="tag tag-price">免费/付费</span>
-                            <span class="tag tag-network net-vpn">✈️ 需梯子</span>
+                            <span class="tag">免费/付费</span>
+                            <span class="tag vpn">✈️ 需科学上网</span>
                         </div>
                     </div>
                 </div>
-                <div class="desc">OpenAI的绘图模型，语义理解能力极强，能精准还原复杂的提示词细节。</div>
+                <div class="desc" title="DALL·E 3是OpenAI推出的第三代图像生成模型，语义理解能力极强，集成在ChatGPT中。">DALL·E 3是OpenAI推出的第三代图像生成模型，语义理解能力极强，集成在ChatGPT中。</div>
                 <div class="features">
-                    <strong>Features</strong>
-                    <ul>
-                        <li>精准语义理解</li>
-                        <li>ChatGPT内置集成</li>
-                        <li>支持局部修改</li>
-                    </ul>
+                    <ul><li>高保真图像生成</li><li>精准语义理解</li><li>与ChatGPT集成</li></ul>
                 </div>
-                <a href="https://openai.com/dall-e-3" target="_blank" class="btn-visit">访问官网</a>
+                <a href="https://openai.com/dall-e-3" target="_blank" class="btn-visit">访问</a>
             </div>
-
             <div class="card">
                 <div class="card-header">
-                    <div class="tool-name-group">
+                    <div>
                         <a href="https://stability.ai" target="_blank" class="tool-name">Stable Diffusion</a>
                         <div class="badges">
-                            <span class="tag tag-price">开源</span>
-                            <span class="tag tag-network net-vpn">✈️ 需梯子</span>
+                            <span class="tag">开源免费</span>
+                            <span class="tag vpn">✈️ 需科学上网</span>
                         </div>
                     </div>
                 </div>
-                <div class="desc">最强大的开源绘图模型，支持本地部署与微调，对画面控制力极高（需显卡支持）。</div>
+                <div class="desc" title="Stable Diffusion是强大的开源图像生成模型，支持本地部署，可控性高。">Stable Diffusion是强大的开源图像生成模型，支持本地部署，可控性高。</div>
                 <div class="features">
-                    <strong>Features</strong>
-                    <ul>
-                        <li>完全开源免费</li>
-                        <li>ControlNet精准控制</li>
-                        <li>可训练专属模型</li>
-                    </ul>
+                    <ul><li>文本生成图像</li><li>图像生成图像</li><li>图像修复与扩展</li></ul>
                 </div>
-                <a href="https://stability.ai" target="_blank" class="btn-visit">访问官网</a>
+                <a href="https://stability.ai" target="_blank" class="btn-visit">访问</a>
             </div>
-
             <div class="card">
                 <div class="card-header">
-                    <div class="tool-name-group">
-                        <a href="https://runwayml.com" target="_blank" class="tool-name">RunWay</a>
+                    <div>
+                        <a href="https://www.adobe.com/cn/products/firefly.html" target="_blank" class="tool-name">Adobe Firefly</a>
                         <div class="badges">
-                            <span class="tag tag-price">免费/付费</span>
-                            <span class="tag tag-network net-vpn">✈️ 需梯子</span>
+                            <span class="tag">免费/付费</span>
+                            <span class="tag vpn">✈️ 需科学上网</span>
                         </div>
                     </div>
                 </div>
-                <div class="desc">专业的AI视频生成与编辑工具，提供好莱坞级别的视频特效处理与文生视频功能。</div>
+                <div class="desc" title="Adobe推出的创意生成式AI模型，支持文本生成图像、生成式填充、文字特效等。">Adobe推出的创意生成式AI模型，支持文本生成图像、生成式填充、文字特效等。</div>
                 <div class="features">
-                    <strong>Features</strong>
-                    <ul>
-                        <li>Gen-2 文生视频</li>
-                        <li>视频背景智能移除</li>
-                        <li>视频风格迁移</li>
-                    </ul>
+                    <ul><li>文本生成图像</li><li>生成式填充</li><li>文字特效</li></ul>
                 </div>
-                <a href="https://runwayml.com" target="_blank" class="btn-visit">访问官网</a>
+                <a href="https://www.adobe.com/cn/products/firefly.html" target="_blank" class="btn-visit">访问</a>
             </div>
-
             <div class="card">
                 <div class="card-header">
-                    <div class="tool-name-group">
-                        <a href="https://klingai.kuaishou.com" target="_blank" class="tool-name">Kling (可灵)</a>
+                    <div>
+                        <a href="https://klingai.com" target="_blank" class="tool-name">可灵</a>
                         <div class="badges">
-                            <span class="tag tag-price">免费/付费</span>
-                            <span class="tag tag-network net-direct">🇨🇳 直连</span>
+                            <span class="tag">免费/付费</span>
+                            <span class="tag direct">🇨🇳 国内直连</span>
                         </div>
                     </div>
                 </div>
-                <div class="desc">快手推出的视频生成模型，效果惊艳，支持生成长达2分钟的高清视频，动作流畅。</div>
+                <div class="desc" title="快手推出的视频生成大模型，支持长达2分钟的高清视频生成，动作流畅真实。">快手推出的视频生成大模型，支持长达2分钟的高清视频生成，动作流畅真实。</div>
                 <div class="features">
-                    <strong>Features</strong>
-                    <ul>
-                        <li>支持2分钟长视频</li>
-                        <li>大幅度动作模拟</li>
-                        <li>1080P高清画质</li>
-                    </ul>
+                    <ul><li>文生视频</li><li>图生视频</li><li>长视频生成</li></ul>
                 </div>
-                <a href="https://klingai.kuaishou.com" target="_blank" class="btn-visit">访问官网</a>
+                <a href="https://klingai.com" target="_blank" class="btn-visit">访问</a>
             </div>
-
             <div class="card">
                 <div class="card-header">
-                    <div class="tool-name-group">
+                    <div>
+                        <a href="https://jimeng.jianying.com" target="_blank" class="tool-name">即梦AI</a>
+                        <div class="badges">
+                            <span class="tag">免费/付费</span>
+                            <span class="tag direct">🇨🇳 国内直连</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="desc" title="字节跳动推出的AI创作平台，提供智能绘画和视频生成服务，激发创意。">字节跳动推出的AI创作平台，提供智能绘画和视频生成服务，激发创意。</div>
+                <div class="features">
+                    <ul><li>智能绘画</li><li>视频生成</li><li>创意社区</li></ul>
+                </div>
+                <a href="https://jimeng.jianying.com" target="_blank" class="btn-visit">访问</a>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <div>
                         <a href="https://openai.com/sora" target="_blank" class="tool-name">Sora</a>
                         <div class="badges">
-                            <span class="tag tag-price">内测中</span>
-                            <span class="tag tag-network net-vpn">✈️ 需梯子</span>
+                            <span class="tag">内测中</span>
+                            <span class="tag vpn">✈️ 需科学上网</span>
                         </div>
                     </div>
                 </div>
-                <div class="desc">OpenAI发布的视频生成模型，能生成60秒长视频，物理光影效果几乎乱真（未公测）。</div>
+                <div class="desc" title="OpenAI发布的文生视频模型，能生成长达60秒的连贯视频，物理光影效果震撼。">OpenAI发布的文生视频模型，能生成长达60秒的连贯视频，物理光影效果震撼。</div>
                 <div class="features">
-                    <strong>Features</strong>
-                    <ul>
-                        <li>60秒长连贯视频</li>
-                        <li>真实物理世界模拟</li>
-                        <li>电影级运镜</li>
-                    </ul>
+                    <ul><li>60秒长视频</li><li>复杂场景生成</li><li>物理规律模拟</li></ul>
                 </div>
-                <a href="https://openai.com/sora" target="_blank" class="btn-visit">访问官网</a>
+                <a href="https://openai.com/sora" target="_blank" class="btn-visit">访问</a>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <a href="https://runwayml.com" target="_blank" class="tool-name">Runway</a>
+                        <div class="badges">
+                            <span class="tag">免费/付费</span>
+                            <span class="tag vpn">✈️ 需科学上网</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="desc" title="专业的AI创意工具套件，支持视频生成、编辑、图像生成等多种功能，好莱坞级特效。">专业的AI创意工具套件，支持视频生成、编辑、图像生成等多种功能，好莱坞级特效。</div>
+                <div class="features">
+                    <ul><li>视频生成 (Gen-2)</li><li>视频编辑</li><li>图像生成</li></ul>
+                </div>
+                <a href="https://runwayml.com" target="_blank" class="btn-visit">访问</a>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <a href="https://pika.art" target="_blank" class="tool-name">Pika</a>
+                        <div class="badges">
+                            <span class="tag">免费/付费</span>
+                            <span class="tag vpn">✈️ 需科学上网</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="desc" title="Pika Labs开发的AI视频生成工具，支持文本和图像生成视频，操作简单，效果出色。">Pika Labs开发的AI视频生成工具，支持文本和图像生成视频，操作简单，效果出色。</div>
+                <div class="features">
+                    <ul><li>文本生成视频</li><li>图像生成视频</li><li>视频编辑</li></ul>
+                </div>
+                <a href="https://pika.art" target="_blank" class="btn-visit">访问</a>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <a href="https://heygen.com" target="_blank" class="tool-name">HeyGen</a>
+                        <div class="badges">
+                            <span class="tag">免费/付费</span>
+                            <span class="tag vpn">✈️ 需科学上网</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="desc" title="AI数字人视频制作平台，可快速生成逼真的数字人讲解视频，支持多语言口型同步。">AI数字人视频制作平台，可快速生成逼真的数字人讲解视频，支持多语言口型同步。</div>
+                <div class="features">
+                    <ul><li>数字人视频生成</li><li>语音克隆</li><li>多语言适配</li></ul>
+                </div>
+                <a href="https://heygen.com" target="_blank" class="btn-visit">访问</a>
             </div>
         </div>
     </div>
 
-    <div class="category-section">
-        <h2 class="category-title">编程工具 / Coding</h2>
+    <div id="coding" class="category-section">
+        <h2 class="category-title">AI编程工具</h2>
         <div class="grid">
             <div class="card">
                 <div class="card-header">
-                    <div class="tool-name-group">
+                    <div>
                         <a href="https://github.com/features/copilot" target="_blank" class="tool-name">GitHub Copilot</a>
                         <div class="badges">
-                            <span class="tag tag-price">付费</span>
-                            <span class="tag tag-network net-vpn">✈️ 需梯子</span>
+                            <span class="tag">付费</span>
+                            <span class="tag vpn">✈️ 需科学上网</span>
                         </div>
                     </div>
                 </div>
-                <div class="desc">GitHub与OpenAI联合开发，嵌入VS Code中，实时预测并补全你的下一行代码。</div>
+                <div class="desc" title="GitHub Copilot是GitHub推出的AI编程助手，能实时提供代码建议，提高编程效率。">GitHub Copilot是GitHub推出的AI编程助手，能实时提供代码建议，提高编程效率。</div>
                 <div class="features">
-                    <strong>Features</strong>
-                    <ul>
-                        <li>实时代码自动补全</li>
-                        <li>IDE深度集成</li>
-                        <li>注释转代码</li>
-                    </ul>
+                    <ul><li>行内代码补全</li><li>函数/代码块生成</li><li>集成在IDE中</li></ul>
                 </div>
-                <a href="https://github.com/features/copilot" target="_blank" class="btn-visit">访问官网</a>
+                <a href="https://github.com/features/copilot" target="_blank" class="btn-visit">访问</a>
             </div>
-
             <div class="card">
                 <div class="card-header">
-                    <div class="tool-name-group">
+                    <div>
                         <a href="https://cursor.sh" target="_blank" class="tool-name">Cursor</a>
                         <div class="badges">
-                            <span class="tag tag-price">免费/付费</span>
-                            <span class="tag tag-network net-vpn">✈️ 需梯子</span>
+                            <span class="tag">免费/付费</span>
+                            <span class="tag vpn">✈️ 需科学上网</span>
                         </div>
                     </div>
                 </div>
-                <div class="desc">集成GPT-4的新一代代码编辑器，支持通过对话重构整个项目代码，Debug效率极高。</div>
+                <div class="desc" title="Cursor是一款集成了GPT-4的AI代码编辑器，支持对话式编程、代码重构和智能调试。">Cursor是一款集成了GPT-4的AI代码编辑器，支持对话式编程、代码重构和智能调试。</div>
                 <div class="features">
-                    <strong>Features</strong>
-                    <ul>
-                        <li>AI原生代码编辑器</li>
-                        <li>全库代码理解</li>
-                        <li>自然语言修改代码</li>
-                    </ul>
+                    <ul><li>对话式编程</li><li>代码智能重构</li><li>GPT-4深度集成</li></ul>
                 </div>
-                <a href="https://cursor.sh" target="_blank" class="btn-visit">访问官网</a>
+                <a href="https://cursor.sh" target="_blank" class="btn-visit">访问</a>
             </div>
-
             <div class="card">
                 <div class="card-header">
-                    <div class="tool-name-group">
-                        <a href="https://codegeex.cn" target="_blank" class="tool-name">CodeGeeX</a>
+                    <div>
+                        <a href="https://replit.com" target="_blank" class="tool-name">Replit AI</a>
                         <div class="badges">
-                            <span class="tag tag-price">免费</span>
-                            <span class="tag tag-network net-direct">🇨🇳 直连</span>
+                            <span class="tag">免费/付费</span>
+                            <span class="tag vpn">✈️ 需科学上网</span>
                         </div>
                     </div>
                 </div>
-                <div class="desc">国产开源的AI编程插件，支持多种主流IDE，代码翻译与中文注释生成体验优秀。</div>
+                <div class="desc" title="Replit提供的在线编程环境AI助手，支持代码补全、解释和生成，适合云端协作开发。">Replit提供的在线编程环境AI助手，支持代码补全、解释和生成，适合云端协作开发。</div>
                 <div class="features">
-                    <strong>Features</strong>
-                    <ul>
-                        <li>代码自动生成</li>
-                        <li>多语言代码翻译</li>
-                        <li>完全免费使用</li>
-                    </ul>
+                    <ul><li>代码补全与生成</li><li>代码解释</li><li>云端协作环境</li></ul>
                 </div>
-                <a href="https://codegeex.cn" target="_blank" class="btn-visit">访问官网</a>
+                <a href="https://replit.com" target="_blank" class="btn-visit">访问</a>
             </div>
         </div>
     </div>
 
-    <div class="category-section">
-        <h2 class="category-title">办公与写作 / Productivity</h2>
+    <div id="work" class="category-section">
+        <h2 class="category-title">办公协作AI</h2>
         <div class="grid">
             <div class="card">
                 <div class="card-header">
-                    <div class="tool-name-group">
-                        <a href="https://www.notion.so" target="_blank" class="tool-name">Notion AI</a>
+                    <div>
+                        <a href="https://notion.so" target="_blank" class="tool-name">Notion AI</a>
                         <div class="badges">
-                            <span class="tag tag-price">付费</span>
-                            <span class="tag tag-network net-vpn">✈️ 需梯子</span>
+                            <span class="tag">付费</span>
+                            <span class="tag vpn">✈️ 需科学上网</span>
                         </div>
                     </div>
                 </div>
-                <div class="desc">集成在Notion笔记中的AI助手，帮你整理笔记、润色文章、自动生成会议纪要。</div>
+                <div class="desc" title="Notion内置的AI助手，提供智能写作、摘要生成、翻译等功能，提升文档处理效率。">Notion内置的AI助手，提供智能写作、摘要生成、翻译等功能，提升文档处理效率。</div>
                 <div class="features">
-                    <strong>Features</strong>
-                    <ul>
-                        <li>笔记智能总结</li>
-                        <li>文章润色扩写</li>
-                        <li>待办事项提取</li>
-                    </ul>
+                    <ul><li>智能写作与润色</li><li>自动摘要生成</li><li>多语言翻译</li></ul>
                 </div>
-                <a href="https://www.notion.so" target="_blank" class="btn-visit">访问官网</a>
+                <a href="https://notion.so" target="_blank" class="btn-visit">访问</a>
             </div>
-
             <div class="card">
                 <div class="card-header">
-                    <div class="tool-name-group">
+                    <div>
                         <a href="https://gamma.app" target="_blank" class="tool-name">Gamma</a>
                         <div class="badges">
-                            <span class="tag tag-price">免费/付费</span>
-                            <span class="tag tag-network net-vpn">✈️ 需梯子</span>
+                            <span class="tag">免费/付费</span>
+                            <span class="tag vpn">✈️ 需科学上网</span>
                         </div>
                     </div>
                 </div>
-                <div class="desc">新一代AI演示文稿制作工具，输入大纲即可自动生成排版精美的PPT或网页。</div>
+                <div class="desc" title="Gamma是一款AI驱动的演示文稿生成工具，输入大纲即可生成精美的PPT、文档和网页。">Gamma是一款AI驱动的演示文稿生成工具，输入大纲即可生成精美的PPT、文档和网页。</div>
                 <div class="features">
-                    <strong>Features</strong>
-                    <ul>
-                        <li>一键生成精美PPT</li>
-                        <li>排版灵活美观</li>
-                        <li>交互式内容展示</li>
-                    </ul>
+                    <ul><li>一键生成PPT</li><li>灵活排版设计</li><li>交互式网页生成</li></ul>
                 </div>
-                <a href="https://gamma.app" target="_blank" class="btn-visit">访问官网</a>
+                <a href="https://gamma.app" target="_blank" class="btn-visit">访问</a>
             </div>
-             
              <div class="card">
                 <div class="card-header">
-                    <div class="tool-name-group">
+                    <div>
                         <a href="https://www.grammarly.com" target="_blank" class="tool-name">Grammarly</a>
                         <div class="badges">
-                            <span class="tag tag-price">免费/付费</span>
-                            <span class="tag tag-network net-vpn">✈️ 需梯子</span>
+                            <span class="tag">免费/付费</span>
+                            <span class="tag vpn">✈️ 需科学上网</span>
                         </div>
                     </div>
                 </div>
-                <div class="desc">智能英文写作助理，不仅能纠正语法错误，还能优化语气、风格和用词地道程度。</div>
+                <div class="desc" title="Grammarly是智能写作助手，提供实时语法检查、拼写纠错和风格建议，提升英文写作质量。">Grammarly是智能写作助手，提供实时语法检查、拼写纠错和风格建议，提升英文写作质量。</div>
                 <div class="features">
-                    <strong>Features</strong>
-                    <ul>
-                        <li>实时语法纠错</li>
-                        <li>写作风格优化</li>
-                        <li>多平台插件支持</li>
-                    </ul>
+                    <ul><li>实时语法拼写检查</li><li>写作风格建议</li><li>语气语调调整</li></ul>
                 </div>
-                <a href="https://www.grammarly.com" target="_blank" class="btn-visit">访问官网</a>
+                <a href="https://www.grammarly.com" target="_blank" class="btn-visit">访问</a>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <a href="https://www.jasper.ai" target="_blank" class="tool-name">Jasper</a>
+                        <div class="badges">
+                            <span class="tag">付费</span>
+                            <span class="tag vpn">✈️ 需科学上网</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="desc" title="Jasper是专为营销团队设计的AI内容创作平台，擅长生成博客、广告、社交媒体文案。">Jasper是专为营销团队设计的AI内容创作平台，擅长生成博客、广告、社交媒体文案。</div>
+                <div class="features">
+                    <ul><li>营销文案生成</li><li>品牌语调保持</li><li>SEO内容优化</li></ul>
+                </div>
+                <a href="https://www.jasper.ai" target="_blank" class="btn-visit">访问</a>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <a href="https://www.copy.ai" target="_blank" class="tool-name">Copy.ai</a>
+                        <div class="badges">
+                            <span class="tag">免费/付费</span>
+                            <span class="tag vpn">✈️ 需科学上网</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="desc" title="Copy.ai是适合电商和社交媒体的文案生成工具，快速生成吸睛标题、邮件和产品描述。">Copy.ai是适合电商和社交媒体的文案生成工具，快速生成吸睛标题、邮件和产品描述。</div>
+                <div class="features">
+                    <ul><li>电商文案生成</li><li>社交媒体内容</li><li>邮件营销文案</li></ul>
+                </div>
+                <a href="https://www.copy.ai" target="_blank" class="btn-visit">访问</a>
             </div>
         </div>
     </div>
 
-    <div class="category-section">
-        <h2 class="category-title">搜索与设计 / Others</h2>
+    <div id="others" class="category-section">
+        <h2 class="category-title">其他垂类 (搜索/音频/设计)</h2>
         <div class="grid">
             <div class="card">
                 <div class="card-header">
-                    <div class="tool-name-group">
+                    <div>
                         <a href="https://www.perplexity.ai" target="_blank" class="tool-name">Perplexity</a>
                         <div class="badges">
-                            <span class="tag tag-price">免费/付费</span>
-                            <span class="tag tag-network net-vpn">✈️ 需梯子</span>
+                            <span class="tag">免费/付费</span>
+                            <span class="tag vpn">✈️ 需科学上网</span>
                         </div>
                     </div>
                 </div>
-                <div class="desc">结合了大模型与搜索引擎的“答案引擎”，直接提供带引用的精准答案，无广告干扰。</div>
+                <div class="desc" title="Perplexity是一款AI搜索引擎，提供直接的答案和来源引用，支持多轮追问。">Perplexity是一款AI搜索引擎，提供直接的答案和来源引用，支持多轮追问。</div>
                 <div class="features">
-                    <strong>Features</strong>
-                    <ul>
-                        <li>精准答案总结</li>
-                        <li>来源引用标注</li>
-                        <li>多轮追问搜索</li>
-                    </ul>
+                    <ul><li>精准答案总结</li><li>来源引用标注</li><li>多轮对话搜索</li></ul>
                 </div>
-                <a href="https://www.perplexity.ai" target="_blank" class="btn-visit">访问官网</a>
+                <a href="https://www.perplexity.ai" target="_blank" class="btn-visit">访问</a>
             </div>
-
             <div class="card">
                 <div class="card-header">
-                    <div class="tool-name-group">
+                    <div>
+                        <a href="https://you.com" target="_blank" class="tool-name">You.com</a>
+                        <div class="badges">
+                            <span class="tag">免费/付费</span>
+                            <span class="tag vpn">✈️ 需科学上网</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="desc" title="You.com是集成了AI聊天功能的搜索引擎，提供个性化搜索结果和隐私保护。">You.com是集成了AI聊天功能的搜索引擎，提供个性化搜索结果和隐私保护。</div>
+                <div class="features">
+                    <ul><li>AI聊天搜索</li><li>个性化结果</li><li>隐私保护</li></ul>
+                </div>
+                <a href="https://you.com" target="_blank" class="btn-visit">访问</a>
+            </div>
+             <div class="card">
+                <div class="card-header">
+                    <div>
                         <a href="https://elevenlabs.io" target="_blank" class="tool-name">ElevenLabs</a>
                         <div class="badges">
-                            <span class="tag tag-price">免费/付费</span>
-                            <span class="tag tag-network net-vpn">✈️ 需梯子</span>
+                            <span class="tag">免费/付费</span>
+                            <span class="tag vpn">✈️ 需科学上网</span>
                         </div>
                     </div>
                 </div>
-                <div class="desc">逼真的AI语音合成平台，支持情感丰富的文本转语音（TTS）和声音克隆功能。</div>
+                <div class="desc" title="ElevenLabs是逼真的AI语音合成平台，支持情感丰富的文本转语音和声音克隆。">ElevenLabs是逼真的AI语音合成平台，支持情感丰富的文本转语音和声音克隆。</div>
                 <div class="features">
-                    <strong>Features</strong>
-                    <ul>
-                        <li>超逼真语音合成</li>
-                        <li>声音克隆技术</li>
-                        <li>多语言情感支持</li>
-                    </ul>
+                    <ul><li>逼真语音合成</li><li>声音克隆技术</li><li>多语言情感支持</li></ul>
                 </div>
-                <a href="https://elevenlabs.io" target="_blank" class="btn-visit">访问官网</a>
+                <a href="https://elevenlabs.io" target="_blank" class="btn-visit">访问</a>
             </div>
-
             <div class="card">
                 <div class="card-header">
-                    <div class="tool-name-group">
-                        <a href="https://www.canva.com" target="_blank" class="tool-name">Canva</a>
+                    <div>
+                        <a href="https://www.descript.com" target="_blank" class="tool-name">Descript</a>
                         <div class="badges">
-                            <span class="tag tag-price">免费/付费</span>
-                            <span class="tag tag-network net-vpn">✈️ 需梯子</span>
+                            <span class="tag">免费/付费</span>
+                            <span class="tag vpn">✈️ 需科学上网</span>
                         </div>
                     </div>
                 </div>
-                <div class="desc">在线设计平台，内置大量AI工具（如Magic Edit），无需设计基础也能做出好图。</div>
+                <div class="desc" title="Descript是一款像编辑文档一样编辑音视频的工具，支持自动转录、AI配音和过词删除。">Descript是一款像编辑文档一样编辑音视频的工具，支持自动转录、AI配音和过词删除。</div>
                 <div class="features">
-                    <strong>Features</strong>
-                    <ul>
-                        <li>AI 一键抠图</li>
-                        <li>海量设计模板</li>
-                        <li>Magic文生图</li>
-                    </ul>
+                    <ul><li>像编辑文本一样编辑音频</li><li>自动转录</li><li>AI语音克隆</li></ul>
                 </div>
-                <a href="https://www.canva.com" target="_blank" class="btn-visit">访问官网</a>
+                <a href="https://www.descript.com" target="_blank" class="btn-visit">访问</a>
+            </div>
+             <div class="card">
+                <div class="card-header">
+                    <div>
+                        <a href="https://www.canva.com" target="_blank" class="tool-name">Canva</a>
+                        <div class="badges">
+                            <span class="tag">免费/付费</span>
+                            <span class="tag vpn">✈️ 需科学上网</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="desc" title="Canva是流行的在线设计平台，内置AI工具如Magic Design，让设计变得简单高效。">Canva是流行的在线设计平台，内置AI工具如Magic Design，让设计变得简单高效。</div>
+                <div class="features">
+                    <ul><li>AI魔法设计</li><li>一键抠图/替换</li><li>海量设计模板</li></ul>
+                </div>
+                <a href="https://www.canva.com" target="_blank" class="btn-visit">访问</a>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <a href="https://uizard.io" target="_blank" class="tool-name">Uizard</a>
+                        <div class="badges">
+                            <span class="tag">免费/付费</span>
+                            <span class="tag vpn">✈️ 需科学上网</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="desc" title="Uizard是AI驱动的UI设计工具，可将手绘草图快速转换为可交互的App/Web原型。">Uizard是AI驱动的UI设计工具，可将手绘草图快速转换为可交互的App/Web原型。</div>
+                <div class="features">
+                    <ul><li>草图转设计稿</li><li>AI生成UI界面</li><li>快速原型制作</li></ul>
+                </div>
+                <a href="https://uizard.io" target="_blank" class="btn-visit">访问</a>
             </div>
         </div>
     </div>
-
 </div>
 
 <footer class="footer">
-    <div class="footer-legend">
-        <div class="legend-item">
-            <span class="tag tag-network net-direct">🇨🇳 直连</span>
-            <span>国内网络可直接访问</span>
-        </div>
-        <div class="legend-item">
-            <span class="tag tag-network net-vpn">✈️ 需梯子</span>
-            <span>需科学上网环境访问</span>
-        </div>
+    <div class="legend">
+        <div class="legend-item"><span class="tag direct">🇨🇳 直连</span> <span>无需特殊网络</span></div>
+        <div class="legend-item"><span class="tag vpn">✈️ 需科学上网</span> <span>需海外网络环境</span></div>
     </div>
-    <p>© 2026 Global AI Tools Collection. All rights reserved.</p>
-    <p style="opacity: 0.6; font-size: 0.8rem; margin-top: 10px;">
-        免责声明：本站仅做工具整理与导航，不提供任何网络代理服务。<br>
-        请遵守当地法律法规，合理合法使用互联网工具。
-    </p>
+    <p>工具链接与服务状态可能会随时间变化，请以官方最新说明为准。</p>
+    <p>&copy; 2026 Hi! AI Tools Navigation. All rights reserved.</p>
 </footer>
+
+<script>
+    // 实时时间功能
+    function updateTime() {
+        const now = new Date();
+        const options = { 
+            year: 'numeric', 
+            month: '2-digit', 
+            day: '2-digit', 
+            hour: '2-digit', 
+            minute: '2-digit', 
+            second: '2-digit', 
+            hour12: false 
+        };
+        document.getElementById('clock').innerText = now.toLocaleString('zh-CN', options);
+    }
+    
+    setInterval(updateTime, 1000);
+    updateTime(); // 初始化立即执行一次
+
+    // 主题切换功能
+    function toggleTheme() {
+        const body = document.body;
+        const icon = document.getElementById('theme-icon');
+        body.classList.toggle('dark-mode');
+        
+        if (body.classList.contains('dark-mode')) {
+            icon.innerText = '☀️';
+        } else {
+            icon.innerText = '🌙';
+        }
+    }
+</script>
 
 </body>
 </html>
